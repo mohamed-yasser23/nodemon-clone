@@ -2,7 +2,6 @@
 import fs from "node:fs"
 import { dirname } from "path";
 import { fileURLToPath } from "url";
-import { exec } from "child_process";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
