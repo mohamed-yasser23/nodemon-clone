@@ -23,8 +23,21 @@ fs.watch(__dirname, (eventType, filename) => {
     watching = true;
     
     setTimeout(() => {
-        console.log(`Filename: ${filename} & Event: ${eventType}`);
-        filestart();
+        console.log(`Filename: ${filename}`);
+        fs.readFile(__dirname+"/"+filename , 'utf8' , (err , data) => {
+            if (err){
+                console.log("change: file deleted")
+            }else {
+                if (data == "" && eventType =="rename") {
+                    console.log("change: file created");
+                }
+                else {
+                console.log("change: file modified")
+                console.log("file contains:");
+                console.log(data);
+                }
+            }
+        })
     watching = false;
 }, 100);
     } else {
@@ -32,22 +45,6 @@ fs.watch(__dirname, (eventType, filename) => {
     }
 });
 
-let childProcess = null;
-let RunFile = "index.js"; /* this is the file we want to run using the tracker  */
-function filestart() 
-{
-    if (childProcess) {
-        childProcess.kill();
-    }
-    console.log(`Running ${RunFile}...`);
-    childProcess = exec(`node ${RunFile}`, (err, stdout, stderr) => { /*this line excute the command in terminal*/
-        if (err) {
-            console.error(`Error executing file: ${err.message}`);
-        }
-        console.log(stdout);
-        console.error(stderr);
-    });
-}
+
 
 console.log("runnig fileTracker ...");
-filestart();
